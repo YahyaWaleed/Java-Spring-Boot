@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class EmployeeDaoImp  implements  EmployeeDAO{
 
-    private EntityManager entityManager;
+    private EntityManager entityManager; //object that allows communication with an entity
 
     @Autowired
     public EmployeeDaoImp(EntityManager theEntityManager) {
@@ -34,14 +34,14 @@ public class EmployeeDaoImp  implements  EmployeeDAO{
     @Override
     public Employee findById(int employeeId) {
         //get employee
-        Employee employee = entityManager.find(Employee.class , employeeId);
+        Employee employee = entityManager.find(Employee.class , employeeId); // find an entity(object stored in db) by its id
         //return employee
         return employee;
     }
 
     @Override
     public Employee save(Employee theEmployee) {
-        Employee dbEmployee = entityManager.merge(theEmployee);
+        Employee dbEmployee = entityManager.merge(theEmployee);  // not sure ?! (new row or update)
         return dbEmployee;
     }
 
