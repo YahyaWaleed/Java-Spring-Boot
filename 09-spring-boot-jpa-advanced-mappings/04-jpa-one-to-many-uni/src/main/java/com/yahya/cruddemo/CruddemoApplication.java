@@ -4,6 +4,7 @@ import com.yahya.cruddemo.dao.AppDao;
 import com.yahya.cruddemo.entity.Course;
 import com.yahya.cruddemo.entity.Instructor;
 import com.yahya.cruddemo.entity.InstructorDetail;
+import com.yahya.cruddemo.entity.Review;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,18 +22,31 @@ public class CruddemoApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(AppDao appDao) {
 		return runner -> {
-//			createInstructor(appDao);
-//			findInstructor(appDao);
-//			deleteInstructor(appDao);
-//			findInstructorDetail(appDao);
-//			deleteInstructorDetail(appDao);
-			//createInstructorWithCourses(appDao);
-//			findInstructorWithCourses(appDao);
-//			findCoursesForInstructor(appDao);
-//			updatingInstructor(appDao);
-//			updatingCourse(appDao);
-			deleteCourse(appDao);
+//			createCourseAndReviews(appDao);
+//			retrieveCourseAndReviews(appDao);
+			deleteCourseAndReviews(appDao);
 		};
+	}
+
+	private void deleteCourseAndReviews(AppDao appDao) {
+		int courseId = 11;
+		appDao.deleteCourseById(courseId);
+		System.out.println("Done");
+	}
+
+	private void retrieveCourseAndReviews(AppDao appDao) {
+		int courseId = 11;
+		Course tempCourse = appDao.findCourseAndReviewByCourseId(courseId);
+		System.out.println("course --> " + tempCourse);
+		System.out.println("reviews -- > " + tempCourse.getReviews());
+	}
+
+	private void createCourseAndReviews(AppDao appDao) {
+		Course tempCourse = new Course("Horse riding");
+		tempCourse.addReview(new Review("good"));
+		tempCourse.addReview(new Review("easy to follow"));
+		appDao.save(tempCourse);
+		System.out.println("Done");
 	}
 
 	private void deleteCourse(AppDao appDao) {

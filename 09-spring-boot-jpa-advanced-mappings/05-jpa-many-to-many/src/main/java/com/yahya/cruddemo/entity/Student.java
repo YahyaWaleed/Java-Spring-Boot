@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "instructor")
-public class Instructor {
-
+@Table(name = "student")
+public class Student {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "first_name")
@@ -23,26 +22,26 @@ public class Instructor {
     @Column(name = "email")
     private String email;
 
-    // connecting the foreign key
-    @OneToOne(cascade = CascadeType.ALL) // cascade = means operations will be applied on both entities
-    @JoinColumn(name = "instructor_detail_id") // name of the foreign key
-    private InstructorDetail instructorDetail;
-
-
-    @OneToMany(mappedBy = "instructor", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, mappedBy = "students")
     private List<Course> courses;
+    public void addCourse(Course course) {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
+        courses.add(course);
+    }
 
-    // no-argument constructor
-    public Instructor() {};
+    // constructors
+    public Student() {};
 
-    // constructor
-    public Instructor(String firstName, String lastName, String email) {
+    public Student(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
     }
 
     // getters and setters
+
     public int getId() {
         return id;
     }
@@ -75,14 +74,6 @@ public class Instructor {
         this.email = email;
     }
 
-    public InstructorDetail getInstructorDetail() {
-        return instructorDetail;
-    }
-
-    public void setInstructorDetail(InstructorDetail instructorDetail) {
-        this.instructorDetail = instructorDetail;
-    }
-
     public List<Course> getCourses() {
         return courses;
     }
@@ -91,24 +82,15 @@ public class Instructor {
         this.courses = courses;
     }
 
-    // method for bi-directional mapping
-    public void add(Course course) {
-        if (courses == null) {
-            courses = new ArrayList<>();
-        }
-        courses.add(course);
-        course.setInstructor(this);
-    }
-// toString() method
+    // toString()
 
     @Override
     public String toString() {
-        return "Instructor{" +
+        return "Student{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", instructorDetail=" + instructorDetail +
                 '}';
     }
 }

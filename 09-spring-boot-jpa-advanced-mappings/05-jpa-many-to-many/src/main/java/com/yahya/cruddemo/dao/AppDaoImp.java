@@ -3,6 +3,7 @@ package com.yahya.cruddemo.dao;
 import com.yahya.cruddemo.entity.Course;
 import com.yahya.cruddemo.entity.Instructor;
 import com.yahya.cruddemo.entity.InstructorDetail;
+import com.yahya.cruddemo.entity.Student;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
@@ -98,6 +99,48 @@ public class AppDaoImp implements AppDao{
     public void deleteCourseById(int id) {
         Course courseToDelete = entityManager.find(Course.class,id);
         entityManager.remove(courseToDelete);
+    }
+
+    @Override
+    @Transactional
+    public void save(Course course) {
+        entityManager.persist(course);
+    }
+
+    @Override
+    public Course findCourseAndReviewByCourseId(int id) {
+        TypedQuery<Course> query = entityManager.createQuery("select c from Course c JOIN Fetch  c.reviews where c.id = :data", Course.class);
+        query.setParameter("data", id);
+        Course courseToFind = query.getSingleResult();
+        return courseToFind;
+    }
+
+    @Override
+    public Course findCourseAndStudentsByCourseId(int id) {
+        TypedQuery<Course> query = entityManager.createQuery("select c from Course c JOIN Fetch  c.students where c.id = :data", Course.class);
+        query.setParameter("data", id);
+        Course course = query.getSingleResult();
+        return course;
+    }
+
+    @Override
+    public Student findStudentAndCoursesByStudentId(int id) {
+        TypedQuery<Student> query = entityManager.createQuery("select s from Student s JOIN Fetch  s.courses where s.id = :data", Student.class);
+        query.setParameter("data", id);
+        Student student = query.getSingleResult();
+        return student;
+    }
+
+    @Override
+    @Transactional
+    public void update(Student student) {
+        entityManager.merge(student);
+    }
+
+    @Override
+    @Transactional
+    public void deleteStudentById(int id) {
+        entityManager.remove(entityManager.find(Student.class, id));
     }
 
 

@@ -3,6 +3,7 @@ package com.yahya.cruddemo.dao;
 import com.yahya.cruddemo.entity.Course;
 import com.yahya.cruddemo.entity.Instructor;
 import com.yahya.cruddemo.entity.InstructorDetail;
+import com.yahya.cruddemo.entity.Student;
 
 import java.util.List;
 
@@ -26,4 +27,16 @@ public interface AppDao {
     Course findCourseById(int id);
 
     void deleteCourseById(int id);
+
+    void save(Course course);
+
+    Course findCourseAndReviewByCourseId(int id);
+
+    Course findCourseAndStudentsByCourseId(int id);
+
+    Student findStudentAndCoursesByStudentId(int id);
+
+    void update(Student student);
+
+    void deleteStudentById(int id);
 }
