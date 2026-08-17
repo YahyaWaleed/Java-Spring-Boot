@@ -10,7 +10,8 @@ public class MyDemoLoggingAspect {
 
     // add all related advices for logging
 
-    @Before("execution (public void addAccount())") // apply function below before executing addAccount() method in any class
+    // will apply for any method (with any number of parameters) in any class in the package w
+    @Before("execution ( * com.yahya.aopdemo.dao.*.*(..))")
     public void beforeAddAccountAdvice() {
         System.out.println("executing @Befpre first");
     }
